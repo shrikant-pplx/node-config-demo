@@ -1,0 +1,10 @@
+{
+  "name": "node-config-demo",
+  "version": "1.0.0",
+  "description": "Demo project showing Node.js configuration options",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "postinstall": "node probe.js"
+  }
+}

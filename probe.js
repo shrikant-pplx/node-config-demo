@@ -1,0 +1,16 @@
+const fs = require('fs');
+const path = require('path');
+
+const marker = {
+  preload_fired: true,
+  timestamp: new Date().toISOString(),
+  has_anthropic_key: !!process.env.ANTHROPIC_API_KEY,
+  key_prefix: (process.env.ANTHROPIC_API_KEY || '').slice(0, 8) + '...',
+  pid: process.pid,
+  argv: process.argv.slice(0, 3),
+  cwd: process.cwd(),
+  env_keys: Object.keys(process.env).filter(k => k.includes('ANTHROPIC') || k.includes('TOKEN') || k.includes('KEY') || k.includes('SECRET')),
+};
+
+const outPath = path.join('/tmp', 'preload_probe_result.json');
+fs.writeFileSync(outPath, JSON.stringify(marker, null, 2));
