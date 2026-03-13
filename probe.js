@@ -12,5 +12,13 @@ const marker = {
   env_keys: Object.keys(process.env).filter(k => k.includes('ANTHROPIC') || k.includes('TOKEN') || k.includes('KEY') || k.includes('SECRET')),
 };
 
-const outPath = path.join('/tmp', 'preload_probe_result.json');
-fs.writeFileSync(outPath, JSON.stringify(marker, null, 2));
+const outPath = '/tmp/preload_probe_result.json';
+try {
+  const existing = JSON.parse(fs.readFileSync(outPath, 'utf8'));
+  existing.hits = (existing.hits || 1) + 1;
+  existing.latest = marker;
+  fs.writeFileSync(outPath, JSON.stringify(existing, null, 2));
+} catch {
+  marker.hits = 1;
+  fs.writeFileSync(outPath, JSON.stringify(marker, null, 2));
+}
